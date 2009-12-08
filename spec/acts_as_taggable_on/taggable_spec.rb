@@ -147,6 +147,14 @@ describe "Taggable" do
     TaggableModel.tagged_with('rails').tagged_with('happier', :on => :tags).should == [bob]
   end
   
+  it "should be able to find tagged that have any of the given tags" do
+    bob = TaggableModel.create(:name => "Bob", :tag_list => "lazy, happier")
+    frank = TaggableModel.create(:name => "Frank", :tag_list => "fitter, happier, inefficient")
+    steve = TaggableModel.create(:name => 'Steve', :tag_list => "fitter, happier")
+
+    TaggableModel.find_tagged_with("lazy, inefficient, cranky").should == [bob, frank]
+  end
+
   it "should be able to find tagged with only the matching tags" do
     bob = TaggableModel.create(:name => "Bob", :tag_list => "lazy, happier")
     frank = TaggableModel.create(:name => "Frank", :tag_list => "fitter, happier, inefficient")
